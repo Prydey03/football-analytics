@@ -5,7 +5,7 @@ a football coach with a growing interest in data analytics. Built using
 Python and open-source football data, progressing from foundational data 
 analysis through to a deployed, interactive tool.
 
-## 🎯 Featured: Player Similarity Engine
+## Featured: Player Similarity Engine
 
 An interactive scouting-style tool that finds statistically similar 
 Premier League players — mimicking a real recruitment workflow. Built 
