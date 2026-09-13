@@ -58,8 +58,6 @@ streamlit run app.py
 
 **Live app: [Premier League Player Similarity Finder](https://football-analytics-mrbbroanuyjpffm3ksutjb.streamlit.app)**
 
-This project includes a live Streamlit app...
-
 ![app screenshot](app_screenshot.png)
 
 **Tools:** `soccerdata`, `scikit-learn`, `pandas`, `streamlit`
