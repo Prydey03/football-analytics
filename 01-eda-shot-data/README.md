@@ -12,6 +12,13 @@ on scoring probability (coefficient = -0.15, p = 0.004). Closer shots are
 meaningfully more likely to result in a goal, though the relationship is 
 noisy at close range given limited sample size.
 
+With regards to Bayer Leverkusen, the data shows that the majority of goals
+occured at close range. The statistics then indicate, based on a coefficient
+of -0.15, that the greater the distance that a shot was taken, the lower
+likelihood of a goal being scored. Tactically, this shows that Bayer
+Leverkusen should look to work the ball into the box rather than attempting
+shots from range, or shooting on sight.
+
 **Limitation:** Data drawn from one team's matches in a single season due 
 to StatsBomb's open data access constraints; results may not generalize.
 
