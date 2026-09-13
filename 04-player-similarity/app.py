@@ -1,5 +1,4 @@
 import streamlit as st
-import soccerdata as sd
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
@@ -10,26 +9,7 @@ st.caption("Note: comparisons are strongest for attacking players. Defensive mid
 
 @st.cache_data
 def load_data():
-    fbref = sd.FBref(leagues='ENG-Premier League', seasons='2024-25')
-    
-    stats = fbref.read_player_season_stats(stat_type='standard')
-    shooting = fbref.read_player_season_stats(stat_type='shooting')
-    misc = fbref.read_player_season_stats(stat_type='misc')
-    
-    stats.columns = ['_'.join(col).strip('_') for col in stats.columns]
-    shooting.columns = ['_'.join(col).strip('_') for col in shooting.columns]
-    misc.columns = ['_'.join(col).strip('_') for col in misc.columns]
-    
-    merged = stats.merge(shooting, on=['league', 'season', 'team', 'player'], suffixes=('', '_shooting'))
-    merged = merged.merge(misc, on=['league', 'season', 'team', 'player'], suffixes=('', '_misc'))
-    
-    model_data = merged[merged['Playing Time_90s'] >= 10].copy()
-    model_data = model_data.reset_index()
-    
-    per_90_needed = ['Standard_Gls', 'Standard_Sh', 'Performance_Ast', 'Performance_Crs',
-                      'Performance_TklW', 'Performance_Int', 'Performance_Fls', 'Performance_Fld']
-    for col in per_90_needed:
-        model_data[col + '_p90'] = model_data[col] / model_data['Playing Time_90s']
+    model_data = pd.read_csv('player_data.csv')
     
     final_features = ['Standard_Gls_p90', 'Standard_Sh_p90', 'Standard_SoT%', 'Standard_G/Sh',
                        'Performance_Ast_p90', 'Performance_Crs_p90', 'Performance_TklW_p90',
