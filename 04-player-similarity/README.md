@@ -56,6 +56,9 @@ Premier League player and see their 5 most statistically similar players.
 pip install -r requirements.txt
 streamlit run app.py
 
+**Live app: [your-app-name.streamlit.app](your-actual-url-here)**
+
+This project includes a live Streamlit app...
 
 ![app screenshot](app_screenshot.png)
 
