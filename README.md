@@ -54,4 +54,8 @@ This is my first venture into data analytics. Each stage's README includes
 the specific question asked, method used, findings, and honestly-stated 
 limitations — I've tried to be transparent about where the data or 
 methods have real constraints, rather than overstating what each analysis 
+<<<<<<< HEAD
 shows.
+=======
+shows.
+>>>>>>> 44c1fec15c390797a513ae6543e8949d09c3ae4f
