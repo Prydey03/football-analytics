@@ -1,2 +1,2 @@
 # football-analytics
-A football data analysis project.
+A personal project combining my background as a football coach with a growing interest in data analysis. Using Python, I analysed open-source professional football data to explore tactical and performance trends — including shot distance, conversion rates, and statistical significance testing. As my first venture into data analytics, this project was also a learning exercise in Python and applied sports analytics, supported by AI-assisted learning tools along the way.
