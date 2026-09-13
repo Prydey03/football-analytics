@@ -16,6 +16,10 @@ deployed as a live app.
 
 ![app screenshot](04-player-similarity/app_screenshot.png)
 
+## Interactive App
+
+**Live app: [Premier League Player Similarity Finder](https://football-analytics-mrbbroanuyjpffm3ksutjb.streamlit.app)**
+
 ## Project Stages
 
 This repo is organized as a progressive skill-building journey, each stage 
@@ -53,9 +57,4 @@ Python, pandas, numpy, matplotlib, `statsmodels`, `mplsoccer`,
 This is my first venture into data analytics. Each stage's README includes 
 the specific question asked, method used, findings, and honestly-stated 
 limitations — I've tried to be transparent about where the data or 
-methods have real constraints, rather than overstating what each analysis 
-<<<<<<< HEAD
-shows.
-=======
-shows.
->>>>>>> 44c1fec15c390797a513ae6543e8949d09c3ae4f
+methods have real constraints, rather than overstating what each analysis
