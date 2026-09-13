@@ -8,9 +8,34 @@ which specific factors drive scoring probability and why.
 **Data:** StatsBomb open data — 790 shots from the 2024 Copa América 
 (32 matches)
 
-**Method:** Logistic regression using five features: distance to goal, 
-shot angle, body part (header vs. other), shot type (open play vs. set 
-piece), and defensive pressure.
+## How xG Was Calculated
+
+Expected Goals (xG) represents the probability that a given shot results 
+in a goal, expressed as a value between 0 and 1. Rather than using 
+StatsBomb's own pre-calculated `shot_statsbomb_xg` value, this model was 
+built independently from raw shot data to demonstrate the underlying 
+methodology.
+
+**Features engineered from raw shot data:**
+- **Distance to goal** — calculated using the distance formula (Pythagoras) 
+  between the shot's (x, y) coordinates and the goal's fixed position, 
+  converted from StatsBomb's native yard-based coordinate system into meters.
+- **Shot angle** — the angle (in radians) subtended by the goalposts from 
+  the shot's location, calculated using trigonometry. A shot from directly 
+  in front of goal has a wider effective angle than the same distance from 
+  a tight sideline position, even though the raw distance is identical.
+- **Body part** — flagged as a header (1) or other (0), since headers 
+  are generally harder to control and convert than shots taken with the foot.
+- **Shot type** — flagged as open play (1) or a set piece/penalty (0), 
+  since these categories have structurally different scoring rates.
+- **Defensive pressure** — whether the shot was taken while under 
+  defensive pressure, flagged as a binary indicator.
+
+**Model:** these five features were fed into a logistic regression 
+(`statsmodels.Logit`), which estimates the probability of scoring as a 
+function of a weighted combination of the inputs. The model was fit on 
+all 790 shots, then used to generate a predicted probability — this 
+model's own xG value — for every shot in the dataset.
 
 ## Key Findings
 
@@ -44,19 +69,50 @@ penalties behave fundamentally differently from open-play attempts, and
 this one does, without penalties being explicitly hard-coded as a special 
 case.
 
+## Comparing This Model to StatsBomb's Own xG
+
+StatsBomb includes its own professionally-calculated xG value for every 
+shot (`shot_statsbomb_xg`), built using a substantially more sophisticated 
+model than the one here — notably, StatsBomb's model incorporates 
+freeze-frame data showing the exact position of every defender and the 
+goalkeeper at the moment of the shot, which this simpler model has no 
+access to.
+
+The comparison chart below plots every shot's StatsBomb xG (x-axis) 
+against this model's xG (y-axis), with a red dashed reference line 
+showing where the two would sit if they agreed perfectly. Most shots 
+cluster tightly along that line, particularly at lower xG values 
+(long-range, low-probability attempts), where both models confidently 
+agree these are unlikely to score.
+
+The clearest point of disagreement is the cluster of five points sitting 
+noticeably above the diagonal around (0.8, 0.6) — these are the dataset's 
+five penalty kicks. Both models correctly identify penalties as 
+high-probability chances, but StatsBomb rates them meaningfully higher 
+(~0.8) than this model does (~0.6). This likely reflects StatsBomb's model 
+having penalty-specific historical conversion data baked in directly, 
+whereas this model only distinguishes penalties indirectly via the 
+"open play" flag — a cruder signal that likely underweights just how 
+reliably penalties convert compared to other set pieces.
+
+A second notable divergence: one shot StatsBomb rated at 0.46 that this 
+model rated at only 0.17. Without freeze-frame data, this model has no way 
+to know whether a shot faced an open goal or a heavily blocked one — it 
+can only infer difficulty from distance, angle, and shot type. This is the 
+clearest illustration of this model's ceiling: it captures the broad shape 
+of shot quality well (r = 0.91 overall), but misses shot-specific defensive 
+context that a more complete model would need to incorporate.
+
 ## Limitation
 
-Where this model diverges most from StatsBomb's xG — for example, one 
-shot StatsBomb rated at 0.46 that this model rated at only 0.17 — the gap 
-likely reflects StatsBomb's access to defender and goalkeeper positioning 
-data via freeze-frame tracking, information this simpler model has no way 
-to account for. A shot with a clear sight of an open goal and StatsBomb 
-recognizes that; this model can only infer shot difficulty from distance, 
-angle, and shot type, and has no visibility into how the defense was set 
-up at the moment of the shot. This is the natural ceiling of a model built 
-without spatial/positional data, and would be the next area to address 
-with a more advanced approach (e.g. incorporating freeze-frame features 
-directly).
+This model's ceiling is set by its lack of positional/spatial context 
+(defender and goalkeeper positioning at the moment of the shot). Where 
+this model diverges most from StatsBomb's xG, the gap consistently traces 
+back to information this simpler model structurally cannot see — how the 
+defense was set up at the moment of the shot. A natural next step would 
+be incorporating StatsBomb's freeze-frame data directly as additional 
+features, which would likely close much of the remaining gap with 
+StatsBomb's own xG values.
 
 **Tools:** `statsmodels`, `statsbombpy`, `pandas`, `numpy`, `matplotlib`
 
