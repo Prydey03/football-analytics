@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import os
 from sklearn.preprocessing import StandardScaler
 from sklearn.neighbors import NearestNeighbors
 
@@ -9,7 +10,9 @@ st.caption("Note: comparisons are strongest for attacking players. Defensive mid
 
 @st.cache_data
 def load_data():
-    model_data = pd.read_csv('player_data.csv')
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    csv_path = os.path.join(current_dir, 'player_data.csv')
+    model_data = pd.read_csv(csv_path)
     
     final_features = ['Standard_Gls_p90', 'Standard_Sh_p90', 'Standard_SoT%', 'Standard_G/Sh',
                        'Performance_Ast_p90', 'Performance_Crs_p90', 'Performance_TklW_p90',
